@@ -1,0 +1,77 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--sapBackgroundColor);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.app-content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 1rem 1.5rem 2rem;
+  box-sizing: border-box;
+}
+
+.app-side-nav {
+  flex-shrink: 0;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.kpi-value {
+  font-size: var(--sapFontHeader2Size);
+  font-weight: bold;
+  color: var(--sapTextColor);
+}
+
+.kpi-label {
+  color: var(--sapContent_LabelColor);
+  font-size: var(--sapFontSmallSize);
+}
+
+.kpi-card-body {
+  padding: 0.75rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.page-subtitle {
+  color: var(--sapContent_LabelColor);
+  margin: 0 0 1rem;
+}
+
+.wizard-step-body {
+  padding: 1rem 0.25rem;
+}
+
+.placeholder-note {
+  color: var(--sapContent_LabelColor);
+  font-style: italic;
+}
