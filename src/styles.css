@@ -75,3 +75,122 @@ body {
   color: var(--sapContent_LabelColor);
   font-style: italic;
 }
+
+.kf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--sapFontSize);
+}
+
+.kf-table th,
+.kf-table td {
+  text-align: right;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--sapList_BorderColor);
+}
+
+.kf-table th:first-child,
+.kf-table td:first-child {
+  text-align: left;
+}
+
+.kf-table th {
+  background: var(--sapList_HeaderBackground);
+  color: var(--sapContent_LabelColor);
+  font-weight: normal;
+  font-size: var(--sapFontSmallSize);
+}
+
+.kf-table tr.kf-current td {
+  font-weight: bold;
+  background: var(--sapList_SelectionBackgroundColor);
+}
+
+.kf-table .kf-up {
+  color: var(--sapPositiveColor);
+}
+
+.kf-table .kf-down {
+  color: var(--sapNegativeColor);
+}
+
+.adjust-chart {
+  width: 100%;
+  height: auto;
+  max-width: 760px;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: var(--sapFontSmallSize);
+  color: var(--sapContent_LabelColor);
+  margin-top: 0.25rem;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.waterfall {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  height: 180px;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+}
+
+.wf-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+  height: 100%;
+}
+
+.wf-value {
+  font-size: var(--sapFontSmallSize);
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+}
+
+.wf-bar-track {
+  flex: 1;
+  width: 32px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.wf-bar {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+}
+
+.wf-bar.wf-base {
+  background: var(--sapBrandColor);
+}
+
+.wf-bar.wf-up {
+  background: var(--sapPositiveColor);
+}
+
+.wf-bar.wf-down {
+  background: var(--sapNegativeColor);
+}
+
+.wf-label {
+  font-size: var(--sapFontSmallSize);
+  color: var(--sapContent_LabelColor);
+  margin-top: 0.3rem;
+  max-width: 90px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

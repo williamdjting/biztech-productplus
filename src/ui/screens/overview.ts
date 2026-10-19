@@ -8,7 +8,9 @@ import "@ui5/webcomponents/dist/Tag.js";
 import { getCatalog } from "../../data/catalog";
 import { getHeroScenarios } from "../../domain/scenarios";
 import { activeScenarioId } from "../../store";
+import { approvals, latestApprovalForScenario } from "../../store/approvals";
 import { navigate } from "../router";
+import { isDemoRunning, runDemo } from "../demo";
 
 export function renderOverview(container: HTMLElement): void {
   const catalog = getCatalog();
@@ -21,6 +23,7 @@ export function renderOverview(container: HTMLElement): void {
         <ui5-title level="H2">Signal Sense — Overview</ui5-title>
         <p class="page-subtitle">Anomaly-aware add-on for SAP IBP for Demand &middot; Western Canada retail planning area</p>
       </div>
+      <ui5-button id="demo-mode-btn" icon="play" design="Emphasized">Run demo (~45s)</ui5-button>
     </div>
 
     <div class="card-grid" id="kpi-cards"></div>
@@ -30,11 +33,16 @@ export function renderOverview(container: HTMLElement): void {
     <div class="card-grid" id="scenario-cards"></div>
   `;
 
+  const approvedCount = scenarios.filter((s) => latestApprovalForScenario(s.id)?.decision === "approved").length;
+  const pendingCount = scenarios.filter((s) => !latestApprovalForScenario(s.id)).length;
+
   const kpis: { label: string; value: string }[] = [
     { label: "SKUs in planning area", value: catalog.totalProducts.toLocaleString() },
     { label: "Stores across Western Canada", value: catalog.totalStores.toLocaleString() },
     { label: "Regions covered", value: String(regions.size) },
-    { label: "Hero scenarios ready", value: String(scenarios.length) },
+    { label: "Scenarios approved", value: `${approvedCount} / ${scenarios.length}` },
+    { label: "Pending decisions", value: String(pendingCount) },
+    { label: "Total decisions logged", value: String(approvals.get().length) },
   ];
 
   const kpiContainer = container.querySelector<HTMLElement>("#kpi-cards")!;
@@ -53,22 +61,26 @@ export function renderOverview(container: HTMLElement): void {
 
   const scenarioContainer = container.querySelector<HTMLElement>("#scenario-cards")!;
   scenarioContainer.innerHTML = scenarios
-    .map(
-      (scenario) => `
+    .map((scenario) => {
+      const latest = latestApprovalForScenario(scenario.id);
+      const statusTag = latest
+        ? `<ui5-tag design="${latest.decision === "approved" ? "Positive" : latest.decision === "rejected" ? "Negative" : "Critical"}">${latest.decision}</ui5-tag>`
+        : `<ui5-tag design="Neutral">No decision yet</ui5-tag>`;
+      return `
       <ui5-card data-scenario-id="${scenario.id}">
         <ui5-card-header title-text="${scenario.name}" subtitle-text="${scenario.regions.join(', ')}"></ui5-card-header>
         <div class="kpi-card-body">
           <ui5-text>${scenario.description}</ui5-text>
           <div style="margin-top:0.5rem;">
-            ${scenario.regions.map((r) => `<ui5-tag design="Information">${r}</ui5-tag>`).join(" ")}
+            ${scenario.regions.map((r) => `<ui5-tag design="Information">${r}</ui5-tag>`).join(" ")} ${statusTag}
           </div>
           <ui5-button design="Emphasized" class="open-scenario-btn" style="margin-top:0.75rem; align-self:flex-start;">
             Open in Signal Sense
           </ui5-button>
         </div>
       </ui5-card>
-    `
-    )
+    `;
+    })
     .join("");
 
   scenarioContainer.querySelectorAll<HTMLElement>(".open-scenario-btn").forEach((btn) => {
@@ -77,6 +89,20 @@ export function renderOverview(container: HTMLElement): void {
       const scenarioId = card?.dataset.scenarioId ?? null;
       activeScenarioId.set(scenarioId);
       navigate("signal-sense");
+    });
+  });
+
+  const demoBtn = container.querySelector<HTMLElement & { disabled: boolean }>("#demo-mode-btn")!;
+  if (isDemoRunning()) {
+    demoBtn.disabled = true;
+    demoBtn.textContent = "Demo running…";
+  }
+  demoBtn.addEventListener("click", () => {
+    demoBtn.disabled = true;
+    demoBtn.textContent = "Demo running…";
+    runDemo(() => {
+      demoBtn.disabled = false;
+      demoBtn.textContent = "Run demo (~45s)";
     });
   });
 }

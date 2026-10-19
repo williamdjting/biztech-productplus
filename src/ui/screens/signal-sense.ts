@@ -8,28 +8,16 @@ import { getHeroScenarios } from "../../domain/scenarios";
 import { activeScenarioId } from "../../store";
 import { renderCapture } from "./capture";
 import { renderClassify } from "./classify";
+import { renderAdjust } from "./adjust";
+import { renderSimulate } from "./simulate";
+import { renderApprove } from "./approve";
 
 const STAGES = [
   { key: "capture", title: "Capture", icon: "inbox" },
   { key: "classify", title: "Classify", icon: "tag" },
-  {
-    key: "adjust",
-    title: "Adjust forecast",
-    icon: "line-chart",
-    blurb: "Key-figure table and contribution waterfall on top of the existing IBP forecast. Built in Stage 3.",
-  },
-  {
-    key: "simulate",
-    title: "Simulate",
-    icon: "simulate",
-    blurb: "What-if sliders and live KPI recalculation, do-nothing vs. adjust. Built in Stage 4.",
-  },
-  {
-    key: "approve",
-    title: "Approve",
-    icon: "accept",
-    blurb: "Human-in-the-loop decision, risks & guardrails, audit trail. Built in Stage 5.",
-  },
+  { key: "adjust", title: "Adjust forecast", icon: "line-chart" },
+  { key: "simulate", title: "Simulate", icon: "simulate" },
+  { key: "approve", title: "Approve", icon: "accept" },
 ] as const;
 
 export function renderSignalSense(container: HTMLElement): void {
@@ -72,4 +60,7 @@ export function renderSignalSense(container: HTMLElement): void {
 
   renderCapture(container.querySelector<HTMLElement>("#stage-body-capture")!);
   renderClassify(container.querySelector<HTMLElement>("#stage-body-classify")!);
+  renderAdjust(container.querySelector<HTMLElement>("#stage-body-adjust")!);
+  renderSimulate(container.querySelector<HTMLElement>("#stage-body-simulate")!);
+  renderApprove(container.querySelector<HTMLElement>("#stage-body-approve")!);
 }
